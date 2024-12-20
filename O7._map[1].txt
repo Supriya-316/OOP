@@ -1,0 +1,34 @@
+#include<iostream>
+#include<map>
+using namespace std;
+
+int main() {
+    string state;
+
+    map<string, int> mpp;
+    mpp.emplace("Maharashtra", 80);
+    mpp.emplace("TamilNadu", 70);
+    mpp.emplace("Goa", 20);
+    mpp.emplace("Gujarat", 70);
+    mpp.emplace("Rajasthan", 60);
+    mpp.emplace("Bihar", 90);
+    mpp.emplace("UttarPradesh", 100);
+    mpp.emplace("Punjab", 50);
+    mpp.emplace("Assam", 40);
+    mpp.emplace("JammuKashmir", 40);
+
+    cout << "Enter the name of the state: ";
+    cin >> state;
+
+    // Search for the state in the map
+    map<string, int>::iterator iter = mpp.find(state);
+
+    // Check if the state was found
+    if (iter != mpp.end()) {
+        cout << "Population of " << (*iter).first << " in millions is " << (*iter).second << endl;
+    } else {
+        cout << "State " << state << " not found in the map." << endl;
+    }
+
+    return 0;
+}

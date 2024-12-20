@@ -1,0 +1,86 @@
+#include <graphics.h>
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Coordinate {
+public:
+    int x, y;
+    Coordinate(int x = 0, int y = 0) : x(x), y(y) {}
+};
+
+class Drawing {
+private:
+    void drawDDA(int x1, int y1, int x2, int y2) {
+        int dx = x2 - x1;
+        int dy = y2 - y1;
+        int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+        float xInc = dx / (float)steps;
+        float yInc = dy / (float)steps;
+        float x = x1;
+        float y = y1;
+        for (int i = 0; i <= steps; i++) {
+            putpixel(round(x), round(y), WHITE);
+            x += xInc;
+            y += yInc;
+        }
+    }
+
+    void drawCircleBresenham(int xc, int yc, int r) {
+        int x = 0, y = r;
+        int d = 3 - 2 * r;
+        while (y >= x) {
+            // Eight symmetric points
+            putpixel(xc + x, yc + y, WHITE);
+            putpixel(xc - x, yc + y, WHITE);
+            putpixel(xc + x, yc - y, WHITE);
+            putpixel(xc - x, yc - y, WHITE);
+            putpixel(xc + y, yc + x, WHITE);
+            putpixel(xc - y, yc + x, WHITE);
+            putpixel(xc + y, yc - x, WHITE);
+            putpixel(xc - y, yc - x, WHITE);
+            x++;
+            if (d > 0) {
+                y--;
+                d = d + 4 * (x - y) + 10;
+            } else {
+                d = d + 4 * x + 6;
+            }
+        }
+    }
+
+public:
+    void drawPattern() {
+        // Rectangle coordinates
+        Coordinate tl(150, 150); // top-left
+        Coordinate br(450, 350); // bottom-right
+        // Draw rectangle
+        drawDDA(tl.x, tl.y, br.x, tl.y);
+        drawDDA(br.x, tl.y, br.x, br.y);
+        drawDDA(br.x, br.y, tl.x, br.y);
+        drawDDA(tl.x, br.y, tl.x, tl.y);
+        int xc = (tl.x + br.x) / 2;
+        int yc = (tl.y + br.y) / 2;
+        int R = min((br.x - tl.x) / 2, (br.y - tl.y) / 2);
+        drawCircleBresenham(xc, yc, R); // Inscribed circle
+        // Diamond (rhombus) vertices
+        Coordinate v1(xc, yc - R);
+        Coordinate v2(xc - R, yc);
+        Coordinate v3(xc, yc + R);
+        Coordinate v4(xc + R, yc);
+        drawDDA(v1.x, v1.y, v2.x, v2.y);
+        drawDDA(v2.x, v2.y, v3.x, v3.y);
+        drawDDA(v3.x, v3.y, v4.x, v4.y);
+        drawDDA(v4.x, v4.y, v1.x, v1.y);
+    }
+};
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "");
+    Drawing drawing;
+    drawing.drawPattern();
+    getch();
+    closegraph();
+    return 0;
+}

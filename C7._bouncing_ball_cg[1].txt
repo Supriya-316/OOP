@@ -1,0 +1,87 @@
+// Aim is
+// Write C++ program to generate Bouncing ball.
+#include <iostream>
+#include <cstdlib>
+#include <graphics.h>
+using namespace std;
+int main()
+{
+    int gd = DETECT, gm;
+    int i, x, y, flag = 0;
+    initgraph(&gd, &gm, NULL);
+    x = getmaxx() / 2;
+    y = 30;
+    while (1)
+    {
+        if (y >= getmaxy() - 30 || y <= 30)
+            flag = !flag;
+        setcolor(RED);
+        circle(x, y, 30); 
+        floodfill(x, y, RED);
+        delay(50);
+        cleardevice();
+        if (flag)
+        {
+            y = y + 5;
+        }
+        else
+        {
+            y = y - 5;
+        }
+    }
+    delay(5000);
+    closegraph();
+    return 0;
+}
+//    command to run the code in terminal
+//    gcc filename.cpp -o sample -lgraph
+//    ./sample
+/* No input required */
+
+
+
+
+
+
+
+
+/*#include <iostream>
+#include <graphics.h>
+#include <math.h>
+using namespace std;
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, NULL);
+    
+    int x = getmaxx() / 2;  // Horizontal center of the screen
+    int y = getmaxy() / 2;  // Vertical center of the screen
+    int radius = 20;        // Radius of the ball
+    int amplitude = 100;    // Maximum height of the bounce
+    float frequency = 0.1;  // Speed of the bounce (affects the frequency of the sine wave)
+    float vertical_offset = getmaxy() / 2; // Vertical offset to keep the ball above the ground
+    
+    float time = 0;  // Time variable for controlling the sine wave
+    while (true) {
+        // Calculate the new vertical position of the ball using the sine wave equation
+        int y_position = amplitude * sin(frequency * time) + vertical_offset;
+        
+        // Clear previous frame
+        cleardevice();
+        
+        // Draw the ball at the calculated position
+        setcolor(RED);
+        circle(x, y_position, radius);
+        floodfill(x, y_position, RED);
+        
+        // Update the time to simulate the next frame
+        time += 0.1;  // Adjust this increment for smoother or faster animation
+        
+        // Delay to control the speed of the animation
+        delay(20);  // Adjust delay for desired animation speed
+    }
+    
+    closegraph();
+    return 0;
+}*/
+

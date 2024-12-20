@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+int main() {
+    std::string filename = "example.txt";
+    std::string dataToWrite = "Hello, this is a test file.\nThis file contains some example text.";
+    std::string dataRead;
+
+    // Create and write to the file
+    std::ofstream outputFile(filename);
+    if (outputFile.is_open()) {
+        outputFile << dataToWrite;
+        std::cout << "Data written to file successfully." << std::endl;
+        outputFile.close();
+    } else {
+        std::cerr << "Error: Unable to open file for writing." << std::endl;
+        return 1;
+    }
+
+    // Open the file for reading
+    std::ifstream inputFile(filename);
+    if (inputFile.is_open()) {
+        std::cout << "\nReading data from file:" << std::endl;
+        while (std::getline(inputFile, dataRead)) {
+            std::cout << dataRead << std::endl;
+        }
+        inputFile.close();
+    } else {
+        std::cerr << "Error: Unable to open file for reading." << std::endl;
+        return 1;
+    }
+
+    return 0;
+}
